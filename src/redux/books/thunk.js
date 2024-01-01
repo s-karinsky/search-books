@@ -1,5 +1,5 @@
 import axios from '../../utils/axios'
-import { setLoaded, setLoading, appendBooks, setBooks, setTotal, setLastRequest } from '.' 
+import { setLoaded, setLoading, appendBooks, setBooks, setTotal, setLastRequest, setError } from '.' 
 
 export const fetchBooks = ({
   q,
@@ -16,21 +16,27 @@ export const fetchBooks = ({
     }
     const response = await axios.get('/volumes', { params: { q, orderBy, startIndex, maxResults } })
     const { items, totalItems } = response.data || {}
-    const books = items.map(({ volumeInfo = {}, id }) => ({
-      id,
-      authors: volumeInfo.authors,
-      category: volumeInfo.categories ? volumeInfo.categories[0] : '',
-      link: volumeInfo.infoLink,
-      image: volumeInfo.imageLinks?.smallThumbnail,
-      title: volumeInfo.title
-    }))
-    if (!isAppend) {
-      dispatch(setTotal(totalItems))
+    
+    if (!items || items.length === 0) {
+      dispatch(setError('Ничего не найдено, попробуйте изменить запрос'))
+    } else {
+      const books = items.map(({ volumeInfo = {}, id }) => ({
+        id,
+        authors: volumeInfo.authors,
+        category: volumeInfo.categories ? volumeInfo.categories[0] : '',
+        link: volumeInfo.infoLink,
+        image: volumeInfo.imageLinks?.smallThumbnail,
+        title: volumeInfo.title
+      }))
+      if (!isAppend) {
+        dispatch(setTotal(totalItems))
+      }
+      dispatch((isAppend ? appendBooks : setBooks)(books))
+      dispatch(setError(null))
+      dispatch(setLoaded(true))
     }
-    dispatch((isAppend ? appendBooks : setBooks)(books))
-    dispatch(setLoaded(true))
   } catch (e) {
-    console.error(e)
+    dispatch(setError(e.message))
   } finally {
     dispatch(setLoading(false))
   }

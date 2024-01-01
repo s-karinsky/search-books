@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import BookPreview from './components/BookPreview'
@@ -10,11 +11,17 @@ import styles from './App.module.scss'
 
 export default function App() {
   const dispatch = useDispatch()
+  const error = useSelector(state => state.books.error)
   const lastRequest = useSelector(state => state.books.lastRequest)
   const isLoading = useSelector(state => state.books.isLoading)
   const isLoaded = useSelector(state => state.books.isLoaded)
   const totalItems = useSelector(state => state.books.total)
   const books = useSelector(state => state.books.list)
+
+  useEffect(() => {
+    if (!error) return
+    window.alert(`Что-то пошло не так\n${error}`)
+  }, [error])
 
   return (
     <div className={styles.app}>

@@ -8,6 +8,7 @@ export const counterSlice = createSlice({
     lastRequest: {},
     total: 0,
     list: [],
+    error: null
   },
   reducers: {
     setLoading: (state, action) => {
@@ -27,6 +28,9 @@ export const counterSlice = createSlice({
     },
     setLastRequest: (state, action) => {
       state.lastRequest = action.payload
+    },
+    setError: (state, action) => {
+      state.error = action.payload
     }
   },
 })
@@ -37,7 +41,8 @@ export const {
   setTotal,
   setBooks,
   appendBooks,
-  setLastRequest
+  setLastRequest,
+  setError
 } = counterSlice.actions
 
 export default counterSlice.reducer
