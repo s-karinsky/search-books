@@ -4,15 +4,23 @@ export default function BookPreview({
   title,
   image,
   category,
-  author,
+  authors,
   link
 }) {
   return (
-    <div
+    <a
+      href={link}
+      target='_blank'
       className={styles.bookPreview}
       style={{ backgroundImage: `url(${image})` }}
     >
-      <a href={link} target='_blank' className={styles.bookPreview__title}>{title}</a>
-    </div>
+      {!!category ? <div className={styles.bookPreview__category}>
+        {category}
+      </div> : <span></span>}
+      <div className={styles.bookPreview__label}>
+        <span className={styles.bookPreview__title}>{title}</span>
+        <span className={styles.bookPreview__authors}>{[].concat(authors).join(', ')}</span>
+      </div>
+    </a>
   )
 }

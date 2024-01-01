@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import BookPreview from './components/BookPreview'
@@ -9,11 +8,9 @@ import Select from './components/Select'
 import { fetchBooks } from './redux/books'
 import styles from './App.module.scss'
 
-// https://www.googleapis.com/books/v1/volumes?q=search+terms+subject:Computers&key=AIzaSyDQehKeKCAJSgxuiBQFpJk6aQu43KT0iGY
-
 export default function App() {
   const dispatch = useDispatch()
-  const [ formValues, setFormValues ] = useState()
+  const lastRequest = useSelector(state => state.books.lastRequest)
   const isLoading = useSelector(state => state.books.isLoading)
   const isLoaded = useSelector(state => state.books.isLoaded)
   const totalItems = useSelector(state => state.books.total)
@@ -29,7 +26,6 @@ export default function App() {
         <Form
           onSubmit={values => {
             if (isLoading) return
-            setFormValues(values)
             dispatch(fetchBooks(values))
           }}
           className={styles.form}
@@ -76,15 +72,15 @@ export default function App() {
           </div>
           <div className={styles.content__footer}>
             {totalItems > books.length && <Button
-              onClick={() => {
-                const newFormValues = formValues
-                newFormValues.startIndex = (formValues.startIndex || 0) + 30
-                setFormValues(newFormValues)
-                dispatch(fetchBooks(newFormValues, true))
-              }}
-              className={styles.loadMore}
+              onClick={() =>
+                dispatch(fetchBooks({
+                  ...lastRequest,
+                  startIndex: (lastRequest.startIndex || 0) + 30
+                }, true))
+              }
               isLoading={isLoading}
               disabled={isLoading}
+              width={250}
             >
               Load more...
             </Button>}
