@@ -1,5 +1,5 @@
 import axios from '../../utils/axios'
-import { setLoaded, setLoading, appendBooks, setBooks, setTotal } from '.' 
+import { setLoaded, setLoading, appendBooks, setBooks, setTotal, setLastRequest } from '.' 
 
 export const fetchBooks = ({
   q,
@@ -10,6 +10,7 @@ export const fetchBooks = ({
 }, isAppend) => async (dispatch) => {
   try {
     dispatch(setLoading(true))
+    dispatch(setLastRequest({ q, category, orderBy, startIndex, maxResults }))
     if (category && category !== 'all') {
       q += ` subject:${category}`
     }
@@ -18,7 +19,7 @@ export const fetchBooks = ({
     const books = items.map(({ volumeInfo = {}, id }) => ({
       id,
       authors: volumeInfo.authors,
-      categories: volumeInfo.categories,
+      category: volumeInfo.categories ? volumeInfo.categories[0] : '',
       link: volumeInfo.infoLink,
       image: volumeInfo.imageLinks?.smallThumbnail,
       title: volumeInfo.title

@@ -5,6 +5,7 @@ export const counterSlice = createSlice({
   initialState: {
     isLoading: false,
     isLoaded: false,
+    lastRequest: {},
     total: 0,
     list: [],
   },
@@ -23,6 +24,9 @@ export const counterSlice = createSlice({
     },
     appendBooks: (state, action) => {
       state.list = [].concat(state.list, action.payload)
+    },
+    setLastRequest: (state, action) => {
+      state.lastRequest = action.payload
     }
   },
 })
@@ -32,7 +36,8 @@ export const {
   setLoaded,
   setTotal,
   setBooks,
-  appendBooks
+  appendBooks,
+  setLastRequest
 } = counterSlice.actions
 
 export default counterSlice.reducer
