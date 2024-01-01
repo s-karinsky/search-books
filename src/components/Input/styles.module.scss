@@ -1,0 +1,49 @@
+@import '../../vars.scss';
+
+.input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &_vertical {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  &_vertical &__field {
+    flex-basis: auto;
+  }
+
+  &__label {
+    font-weight: bold;
+    padding-left: 5px;
+    color: $color-dark;
+  }
+
+  &__field {
+    flex-basis: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    font-size: 16px;
+    padding: 0 0 0 10px;
+    border-radius: 5px;
+    border: 1px solid $color-secondary;
+    outline: none;
+
+    &_loading {
+      background: linear-gradient(90deg, $color-light 0, $color-light 50%, #fff 50%, #fff 100%);
+      animation: inputLoading 1s linear infinite;
+      background-repeat: repeat;
+      background-size: 100px auto;
+    }
+  }
+}
+
+@keyframes inputLoading {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 100px 0;
+	}
+}

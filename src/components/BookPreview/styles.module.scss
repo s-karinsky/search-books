@@ -1,0 +1,31 @@
+@import '../../mixins.scss';
+
+.bookPreview {
+  width: 180px;
+  height: 250px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, .3);
+  display: flex;
+  align-items: flex-end;
+
+  @include mobile {
+    width: 150px;
+    height: 200px;
+  }
+
+  &__title {
+    flex-basis: 100%;
+    font-size: 14px;
+    background: rgba(0, 0, 0, .4);
+    color: #fff;
+    text-decoration: underline;
+    padding: 10px;
+    text-shadow: 1px 1px 0x #000;
+    transition: ease .3s background-color;
+
+    &:hover {
+      background: rgba(0, 0, 0, .7);
+    }
+  }
+}

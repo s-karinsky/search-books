@@ -1,0 +1,40 @@
+import { createSlice } from '@reduxjs/toolkit'
+
+export const counterSlice = createSlice({
+  name: 'books',
+  initialState: {
+    isLoading: false,
+    isLoaded: false,
+    total: 0,
+    list: [],
+  },
+  reducers: {
+    setLoading: (state, action) => {
+      state.isLoading = action.payload
+    },
+    setLoaded: (state, action) => {
+      state.isLoaded = action.payload
+    },
+    setTotal: (state, action) => {
+      state.total = action.payload
+    },
+    setBooks: (state, action) => {
+      state.list = action.payload
+    },
+    appendBooks: (state, action) => {
+      state.list = [].concat(state.list, action.payload)
+    }
+  },
+})
+
+export const {
+  setLoading,
+  setLoaded,
+  setTotal,
+  setBooks,
+  appendBooks
+} = counterSlice.actions
+
+export default counterSlice.reducer
+
+export * from './thunk'
